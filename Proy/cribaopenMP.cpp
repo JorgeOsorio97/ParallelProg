@@ -2,39 +2,41 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
-#include <bitset>
 #include <omp.h>
 using namespace std;
 
-long long tamanio_criba = 1000;
-vector<int> esPrimo(tamanio_criba);
-vector<long long> listaPrimos;
+vector<long long> primos;
+long long criba = 1000;
+vector<int> esPrimo(criba);
 
 int main(void)
 {
     int thread_count = omp_get_num_threads();
 
-    for (int i = 0; i < tamanio_criba; i++)
+    for (int i = 0; i < criba; i++)
     {
         esPrimo[i] = 1;
     }
 
     esPrimo[0] = esPrimo[1] = 1;
-    listaPrimos.clear();
+    primos.clear();
 
-    for (long long i = 2; i <= tamanio_criba + 1; i++)
+    for (long long i = 2; i <= criba + 1; i++)
     {
         if (esPrimo[i])
         {
             #pragma omp parallel for num_threads(thread_count)
-            for (long long j = i * i; j <= tamanio_criba + 1; j += i)
+            for (long long j = i * i; j <= criba + 1; j += i)
             {
                 esPrimo[j] = 0;
             }
-            listaPrimos.push_back(i);
+            primos.push_back(i);
         }
     }
 
-    printf("Primos menores o iguales a %lld - %ld\n", tamanio_criba, listaPrimos.size());
+    printf("Primos menores o iguales a %lld - %ld\n", criba, primos.size());
+    for(int i=0; i<primos.size(); i++){
+        printf("%lld - ", primos[i]);
+    }
     return 0;
 }
