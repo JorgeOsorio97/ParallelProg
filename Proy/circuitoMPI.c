@@ -107,37 +107,22 @@ int main(void)
             }
         }
 
-    // if (my_rank == 0)
-    // {
-    //     int counter = 0;
 
-        
-    //     printf("\n");
-    //     printf("counter: %d\n", counter);
 
-    //     for (int i = 1; i < comm_sz; i++)
-    //     {
-    //         MPI_Send(&all_options, 1, int_arr_arr, i, 0, MPI_COMM_WORLD);
-    //     }
-    // }
-    // else
-    // {
-        // int all_options[big_size][16];
-        // int counter = 0;
-        // MPI_Recv(&all_options, 1, int_arr_arr, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
 
         for (int i = 0; i < aux_size; i++)
         {
             int position = (aux_size * my_rank) + i;
             int res = solver(all_options[position]);
 
-            // for (int j = 0; j < 16; j++)
-            // {
-            //     printf("%d - ", all_options[position][j]);
-            // }
+
 
             if(res){
-                printf("From rank %d index number %d solutions equals %d", my_rank, position, res);
+                printf("From rank %d index number %d solutions equals %d - ", my_rank, position, res);
+                for(int i=0; i<16; i++){
+                    printf("%d", all_options[position][i]);
+                }
             printf("\n");
             }
         }
